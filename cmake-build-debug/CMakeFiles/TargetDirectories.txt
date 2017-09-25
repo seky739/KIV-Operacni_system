@@ -1,0 +1,3 @@
+C:/Users/micha/Downloads/os_simulator (3)/cmake-build-debug/CMakeFiles/os_simulator__3_.dir
+C:/Users/micha/Downloads/os_simulator (3)/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/micha/Downloads/os_simulator (3)/cmake-build-debug/CMakeFiles/rebuild_cache.dir

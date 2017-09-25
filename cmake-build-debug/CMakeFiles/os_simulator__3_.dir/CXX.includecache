@@ -1,0 +1,90 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Users/micha/Downloads/os_simulator (3)/src/api/api.h
+cstdint
+-
+api_extension.h
+C:/Users/micha/Downloads/os_simulator (3)/src/api/api_extension.h
+
+C:/Users/micha/Downloads/os_simulator (3)/src/api/api_extension.h
+
+C:/Users/micha/Downloads/os_simulator (3)/src/boot/main.cpp
+Windows.h
+-
+iostream
+-
+
+C:/Users/micha/Downloads/os_simulator (3)/src/kernel/dllmain.cpp
+Windows.h
+-
+
+C:/Users/micha/Downloads/os_simulator (3)/src/kernel/handles.cpp
+handles.h
+C:/Users/micha/Downloads/os_simulator (3)/src/kernel/handles.h
+map
+-
+mutex
+-
+random
+-
+
+C:/Users/micha/Downloads/os_simulator (3)/src/kernel/handles.h
+../api/api.h
+C:/Users/micha/Downloads/os_simulator (3)/src/api/api.h
+Windows.h
+-
+
+C:/Users/micha/Downloads/os_simulator (3)/src/kernel/io.cpp
+io.h
+C:/Users/micha/Downloads/os_simulator (3)/src/kernel/io.h
+kernel.h
+C:/Users/micha/Downloads/os_simulator (3)/src/kernel/kernel.h
+handles.h
+C:/Users/micha/Downloads/os_simulator (3)/src/kernel/handles.h
+
+C:/Users/micha/Downloads/os_simulator (3)/src/kernel/io.h
+../api/api.h
+C:/Users/micha/Downloads/os_simulator (3)/src/api/api.h
+
+C:/Users/micha/Downloads/os_simulator (3)/src/kernel/kernel.cpp
+kernel.h
+C:/Users/micha/Downloads/os_simulator (3)/src/kernel/kernel.h
+io.h
+C:/Users/micha/Downloads/os_simulator (3)/src/kernel/io.h
+Windows.h
+-
+
+C:/Users/micha/Downloads/os_simulator (3)/src/kernel/kernel.h
+../api/api.h
+C:/Users/micha/Downloads/os_simulator (3)/src/api/api.h
+
+C:/Users/micha/Downloads/os_simulator (3)/src/user/dllmain.cpp
+Windows.h
+-
+
+C:/Users/micha/Downloads/os_simulator (3)/src/user/rtl.cpp
+rtl.h
+C:/Users/micha/Downloads/os_simulator (3)/src/user/rtl.h
+atomic
+-
+
+C:/Users/micha/Downloads/os_simulator (3)/src/user/rtl.h
+../api/api.h
+C:/Users/micha/Downloads/os_simulator (3)/src/api/api.h
+
+C:/Users/micha/Downloads/os_simulator (3)/src/user/shell.cpp
+shell.h
+C:/Users/micha/Downloads/os_simulator (3)/src/user/shell.h
+rtl.h
+C:/Users/micha/Downloads/os_simulator (3)/src/user/rtl.h
+
+C:/Users/micha/Downloads/os_simulator (3)/src/user/shell.h
+../api/api.h
+C:/Users/micha/Downloads/os_simulator (3)/src/api/api.h
+

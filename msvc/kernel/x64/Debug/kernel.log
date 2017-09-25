@@ -1,0 +1,8 @@
+﻿  kernel.cpp
+  io.cpp
+  handles.cpp
+  dllmain.cpp
+  Generování kódu...
+     Vytváří se knihovna ..\..\compiled\kernel.lib a objekt ..\..\compiled\kernel.exp.
+  kernel.vcxproj -> C:\Users\micha\Downloads\os_simulator (3)\msvc\kernel\..\..\compiled\kernel.dll
+  kernel.vcxproj -> ..\..\compiled\kernel.pdb (Partial PDB)

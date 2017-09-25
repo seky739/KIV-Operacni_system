@@ -1,0 +1,10 @@
+﻿  dllmain.cpp
+  handles.cpp
+  io.cpp
+  kernel.cpp
+     Vytváří se knihovna ..\..\compiled\kernel.lib a objekt ..\..\compiled\kernel.exp.
+  Vytváří se kód.
+  All 224 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Vytváření kódu se dokončilo.
+  kernel.vcxproj -> C:\Users\micha\Downloads\os_simulator (3)\msvc\kernel\..\..\compiled\kernel.dll
+  kernel.vcxproj -> ..\..\compiled\kernel.pdb (Full PDB)
