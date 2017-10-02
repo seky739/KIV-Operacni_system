@@ -16,4 +16,6 @@ namespace kiv_os_rtl {
 	//uzavre soubor identifikovany pomoci deskriptoru
 	//vraci true, kdyz vse OK
 
+	bool Read_File(const kiv_os::THandle file_handle, const void *buffer, const size_t buffer_size, size_t &written);
+
 }

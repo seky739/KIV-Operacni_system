@@ -28,6 +28,16 @@ void HandleIO(kiv_os::TRegisters &regs) {
 
 			}
 			break; //scWriteFile
+		case kiv_os::scRead_File: {
+			DWORD readed;
+			HANDLE hnd = Resolve_kiv_os_Handle(regs.rdx.x);
+			regs.flags.carry = hnd == INVALID_HANDLE_VALUE;
+			if (!regs.flags.carry) regs.flags.carry = !ReadFile(hnd, reinterpret_cast<void*>(regs.rdi.r), (DWORD)regs.rcx.r, &readed, NULL);
+			if (!regs.flags.carry) regs.rax.r = readed;
+			else regs.rax.r = GetLastError();
+
+		}
+								   break; //scRead_File
 
 
 		case kiv_os::scClose_Handle: {
