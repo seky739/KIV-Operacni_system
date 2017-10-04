@@ -1,0 +1,7 @@
+md x
+cd x
+md y
+md z
+cd y
+cd ..\z
+dir | sort | sort > out.txt

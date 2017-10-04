@@ -18,4 +18,5 @@ namespace kiv_os_rtl {
 
 	bool Read_File(const kiv_os::THandle file_handle, const void *buffer, const size_t buffer_size, size_t &written);
 
+	
 }

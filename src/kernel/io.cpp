@@ -39,7 +39,9 @@ void HandleIO(kiv_os::TRegisters &regs) {
 		}
 								   break; //scRead_File
 
-
+		case kiv_os::scGet_Current_Directory: {
+			
+		}
 		case kiv_os::scClose_Handle: {
 				HANDLE hnd = Resolve_kiv_os_Handle(regs.rdx.x);
 				regs.flags.carry = !CloseHandle(hnd);

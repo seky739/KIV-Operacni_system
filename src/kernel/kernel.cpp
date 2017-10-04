@@ -26,7 +26,7 @@ void Initialize_Kernel() {
 void Shutdown_Kernel() {
 	FreeLibrary(User_Programs);
 }
-
+//sem se dostanu z user po zavolani do syscall
 void __stdcall Sys_Call(kiv_os::TRegisters &regs) {
 
 	switch (regs.rax.h) {

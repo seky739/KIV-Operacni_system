@@ -27,12 +27,15 @@ size_t __stdcall shell(const kiv_os::TRegisters &regs) {
 	bool mStdInOpen = true;
 	int pos = 0;
 	//kiv_os_rtl::Close_File(stdin);
-		
+	//tady volam operaci write v rtl.cpp
+	kiv_os_rtl::Write_File(stdout, "Fuck@console> ", 14, written);
 	while (mStdInOpen) {
-
+		
 		kiv_os_rtl::Read_File(stdin, pole, 1, written);
 		ReadBuffer[pos] = pole[0];
 		if (ReadBuffer[pos] == '\n') { 
+			
+			
 			kiv_os_rtl::Write_File(stdout, ReadBuffer, pos, written);
 			kiv_os_rtl::Write_File(stdout, "\n\n", 2, written);
 			for (size_t i = 0; i < textSize; i++)
@@ -40,8 +43,9 @@ size_t __stdcall shell(const kiv_os::TRegisters &regs) {
 				ReadBuffer[i] = '\0';
 			}
 			pos = 0;
+			kiv_os_rtl::Write_File(stdout, "Fuck@console> ", 14, written);
 		}
-		else { pos++; }
+		else { pos++;  }
 		
 		
 		}
