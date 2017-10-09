@@ -121,8 +121,8 @@ int isKeyword(char buffer[]) {
 }
 
 int KEY(char buf[]) {
-	int x=-1,i, j = 0;
-
+	int x = -1, i,  j = 0;
+	bool keymust = false;
 	char buffer[15] = { 0 };
 		for (i = 0; i < 128; ++i) {
 			char ch = buf[i];
@@ -137,8 +137,10 @@ int KEY(char buf[]) {
 					return 0;
 				}
 			}
-			if ((ch == ' ' || ch == '\n' || ch == '\r')) {
+			if ((ch == ' ' || ch == '\n' || ch == '\r' )) {
+				
 				x = isKeyword(buffer);
+				if (x < -1 && keymust) { kiv_os_rtl::Write_File(stdout, "Syntaxe Spatna\n", 15, written); return 0; }
 				if (x > -1) {
 					ret_flag(x);
 					kiv_os_rtl::Write_File(stdout, buffer, j, written);		
@@ -160,10 +162,10 @@ int KEY(char buf[]) {
 					i++;
 				}
 			}
-			
+			if ((ch == ' '&& buf[i] == '|') || (ch == ' '&& buf[i] == '>') || (ch == '>'&& buf[i] == '>')) { kiv_os_rtl::Write_File(stdout, "Pipe nebo >\n", 12, written);	keymust = true; i++; }
 				buffer[j] = buf[i];
 				j++;
-			
+
 			
 	}
 	
