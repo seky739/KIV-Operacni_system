@@ -9,8 +9,8 @@
 
 
 
-
-
+kiv_os::THandle stdout;
+size_t written;
 
 size_t __stdcall shell(const kiv_os::TRegisters &regs) {
 	
@@ -20,8 +20,9 @@ size_t __stdcall shell(const kiv_os::TRegisters &regs) {
 	int textSize = 128;
 	ReadBuffer = new char[textSize];
 
-	size_t written;
-	kiv_os::THandle stdout = kiv_os_rtl::Create_File("CONOUT$", /*FILE_SHARE_WRITE*/2);	//nahradte systemovym resenim, zatim viz Console u CreateFile na MSDN
+	
+	
+	 stdout = kiv_os_rtl::Create_File("CONOUT$", /*FILE_SHARE_WRITE*/2);	//nahradte systemovym resenim, zatim viz Console u CreateFile na MSDN
 	//kiv_os_rtl::Write_File(stdin, "Hello world!", /*strlen(hello)*/13, written);
 	kiv_os::THandle stdin = kiv_os_rtl::Create_File("CONIN$", /*FILE_SHARE_WRITE*/1);
 	bool mStdInOpen = true;
@@ -35,7 +36,9 @@ size_t __stdcall shell(const kiv_os::TRegisters &regs) {
 		ReadBuffer[pos] = pole[0];
 		if (ReadBuffer[pos] == '\n') { 
 			
-			
+			KEY(ReadBuffer);
+			//if(accept_string(ReadBuffer)==0){ kiv_os_rtl::Write_File(stdout, "OK\n", 3, written); }
+			//else{ kiv_os_rtl::Write_File(stdout, "NOK\n", 4, written); }
 			kiv_os_rtl::Write_File(stdout, ReadBuffer, pos, written);
 			kiv_os_rtl::Write_File(stdout, "\n\n", 2, written);
 			for (size_t i = 0; i < textSize; i++)
@@ -77,3 +80,86 @@ size_t __stdcall shell(const kiv_os::TRegisters &regs) {
 	return 0;
 }
 
+
+/*int accept_string(char *Buffer){
+	//echo, cd, dir, md, rd, type, wc, sort, ps, shutdown
+	// keyword -prepinac parametr
+	//keyword -prepinac -prepinac parametr
+	// keyword parametr
+	//keyword parametr | keyword 
+	char * pch=NULL;
+	pch = strstr(Buffer, "cd");
+	if (!pch) { pch = strstr(Buffer, "dir"); }
+	if (!pch) { pch = strstr(Buffer, "echo"); }
+	if(!pch) { pch = strstr(Buffer, "md"); }
+	if (!pch) { pch = strstr(Buffer, "rd"); }
+	if (!pch) { pch = strstr(Buffer, "type"); }
+	if (!pch) { pch = strstr(Buffer, "wc"); }
+	if (!pch) { pch = strstr(Buffer, "sort"); }
+	if (!pch) { pch = strstr(Buffer, "ps"); }
+
+	if (pch) { return 0; }
+	else
+	{
+		return -1;
+	}
+}*/
+
+int isKeyword(char buffer[]) {
+	char keywords[10][15] = { "echo", "cd", "dir", "md", "rd", "type", "wc", "sort", "ps", "shutdown" };
+	int i, flag = 0;
+	char * pch = NULL;
+	for (i = 0; i < 10; ++i) {
+		pch = strstr(buffer, keywords[i]);
+		if (pch) {
+			flag = 1;
+			break;
+		}
+	}
+
+	return flag;
+}
+
+int KEY(char buf[]) {
+	int x=0,i, j = 0;
+	char buffer[15] = { 0 };
+		for (i = 0; i < 128; ++i) {
+			char ch = buf[i];
+			if (ch == '\r' && buf[i + 1] == '\n') { 
+				if (isKeyword(buffer) == 1) {
+					kiv_os_rtl::Write_File(stdout, buffer, j, written);
+					kiv_os_rtl::Write_File(stdout, " Keyword\n", 9, written);
+					j = 0;
+					return 0;
+				}
+			}
+			if ((ch == ' ' || ch == '\n' || ch == '\r')) {
+				if (isKeyword(buffer) == 1) {
+					kiv_os_rtl::Write_File(stdout, buffer, j, written);
+					kiv_os_rtl::Write_File(stdout, " Keyword\n", 9, written);
+					j = 0;
+					for (size_t k = 0; k < sizeof(buffer); k++)
+					{
+						buffer[k] = '\0';
+					}
+					i++;
+				}
+				else{ 
+					kiv_os_rtl::Write_File(stdout, "\nNoKey\n", 7, written);
+					for (size_t k = 0; k < sizeof(buffer); k++)
+						{
+							buffer[k] = '\0';
+						}
+					j = 0;
+					i++;
+				}
+			}
+			
+				buffer[j] = buf[i];
+				j++;
+			
+			
+	}
+	
+	return 0;
+}

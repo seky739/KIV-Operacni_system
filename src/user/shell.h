@@ -4,6 +4,10 @@
 
 extern "C" size_t __stdcall shell(const kiv_os::TRegisters &regs);
 
+int isKeyword(char buffer[]);
+int KEY(char buf[]);
+
+//int accept_string(char *Buffer);
 
 //nasledujici funkce si dejte do vlastnich souboru
 /*extern "C" size_t __stdcall type(const kiv_os::TRegisters &regs) { return 0; };
