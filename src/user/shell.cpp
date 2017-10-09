@@ -39,7 +39,8 @@ size_t __stdcall shell(const kiv_os::TRegisters &regs) {
 			KEY(ReadBuffer);
 			//if(accept_string(ReadBuffer)==0){ kiv_os_rtl::Write_File(stdout, "OK\n", 3, written); }
 			//else{ kiv_os_rtl::Write_File(stdout, "NOK\n", 4, written); }
-			kiv_os_rtl::Write_File(stdout, ReadBuffer, pos, written);
+			kiv_os_rtl::Write_File(stdout, "\n\n", 2, written);
+			//kiv_os_rtl::Write_File(stdout, ReadBuffer, pos, written);
 			kiv_os_rtl::Write_File(stdout, "\n\n", 2, written);
 			for (size_t i = 0; i < textSize; i++)
 			{
@@ -103,7 +104,27 @@ size_t __stdcall shell(const kiv_os::TRegisters &regs) {
 	{
 		return -1;
 	}
-}*/
+}
+
+
+if (ch == '\r' && buf[i + 1] == '\n') {
+x = isKeyword(buffer);
+if ((x < -1 && keymust)) { kiv_os_rtl::Write_File(stdout, "Syntaxe Spatna\n", 15, written); return 0; }
+if ((x > -1 && lastkey && keymust)) { kiv_os_rtl::Write_File(stdout, "Syntaxe Spatna\n", 15, written); lastkey = false; return 0; }
+if ((x > -1 && lastkey && !keymust)) { kiv_os_rtl::Write_File(stdout, "Syntaxe Spatna\n", 15, written); lastkey = false; return 0; }
+if (x > -1) {
+ret_flag(x);
+kiv_os_rtl::Write_File(stdout, buffer, j, written);
+kiv_os_rtl::Write_File(stdout, " Keyword\n", 9, written);
+j = 0;
+x = 0;
+return 0;
+}
+}
+
+
+
+*/
 
 int isKeyword(char buffer[]) {
 	char keywords[10][15] = { "echo", "cd", "dir", "md", "rd", "type", "wc", "sort", "ps", "shutdown" };
@@ -123,29 +144,41 @@ int isKeyword(char buffer[]) {
 int KEY(char buf[]) {
 	int x = -1, i,  j = 0;
 	bool keymust = false;
+	bool commandProc = false;
 	char buffer[15] = { 0 };
 		for (i = 0; i < 128; ++i) {
 			char ch = buf[i];
-			if (ch == '\r' && buf[i + 1] == '\n') { 
-				x = isKeyword(buffer);
-				if ( x > -1) {
-					ret_flag(x);
-					kiv_os_rtl::Write_File(stdout, buffer, j, written);
-					kiv_os_rtl::Write_File(stdout, " Keyword\n", 9, written);
-					j = 0;
-					x = 0;
-					return 0;
-				}
-			}
 			if ((ch == ' ' || ch == '\n' || ch == '\r' )) {
-				
 				x = isKeyword(buffer);
-				if (x < -1 && keymust) { kiv_os_rtl::Write_File(stdout, "Syntaxe Spatna\n", 15, written); return 0; }
-				if (x > -1) {
+				if (keymust && x < -1) { kiv_os_rtl::Write_File(stdout, "Syntaxe Spatna\n", 15, written); return 0; }
+				//if ((x < -1 && keymust)) { kiv_os_rtl::Write_File(stdout, "Syntaxe Spatna\n", 15, written); return 0; }
+				//if ((x > -1 && lastkey && keymust)) { kiv_os_rtl::Write_File(stdout, "Syntaxe Spatna\n", 15, written); lastkey = false; return 0; }
+				if (x > -1 ) {
 					ret_flag(x);
-					kiv_os_rtl::Write_File(stdout, buffer, j, written);		
-					kiv_os_rtl::Write_File(stdout, " Keyword\n", 9, written);
+					//kiv_os_rtl::Write_File(stdout, buffer, j, written);		
+					//kiv_os_rtl::Write_File(stdout, " Keyword\n", 9, written);
 					j = 0;
+					for (size_t k = i; k < 128; k++)
+					{
+						ch = buf[k];
+						
+						if (ch == '\r') {
+							keymust = false;
+							commandProc = true;
+							kiv_os_rtl::Write_File(stdout, buf, k, written);
+							break;
+						}
+						if (ch == '|') {
+							keymust = true;
+							commandProc = false; 
+							kiv_os_rtl::Write_File(stdout, "Pipe\n", 5, written);
+							kiv_os_rtl::Write_File(stdout, buf, k, written);
+							kiv_os_rtl::Write_File(stdout, "\n", 1, written);
+							i = k;
+							i++;
+							break;
+						}
+					}
 					for (size_t k = 0; k < sizeof(buffer); k++)
 					{
 						buffer[k] = '\0';
@@ -153,7 +186,7 @@ int KEY(char buf[]) {
 					i++;
 				}
 				else{ 
-					kiv_os_rtl::Write_File(stdout, "\nNoKey\n", 7, written);
+					//kiv_os_rtl::Write_File(stdout, "\nNoKey\n", 7, written);
 					for (size_t k = 0; k < sizeof(buffer); k++)
 						{
 							buffer[k] = '\0';
@@ -162,9 +195,14 @@ int KEY(char buf[]) {
 					i++;
 				}
 			}
-			if ((ch == ' '&& buf[i] == '|') || (ch == ' '&& buf[i] == '>') || (ch == '>'&& buf[i] == '>')) { kiv_os_rtl::Write_File(stdout, "Pipe nebo >\n", 12, written);	keymust = true; i++; }
+			//if ((ch == ' '&& buf[i] == '|') || (ch == ' '&& buf[i] == '>') || (ch == '>'&& buf[i] == '>')) { kiv_os_rtl::Write_File(stdout, "Pipe nebo >\n", 12, written);	keymust = true; i++; }
+			if (!commandProc) {
 				buffer[j] = buf[i];
 				j++;
+			}
+			else { break; }
+
+			
 
 			
 	}
