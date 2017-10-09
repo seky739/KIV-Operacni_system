@@ -107,12 +107,12 @@ size_t __stdcall shell(const kiv_os::TRegisters &regs) {
 
 int isKeyword(char buffer[]) {
 	char keywords[10][15] = { "echo", "cd", "dir", "md", "rd", "type", "wc", "sort", "ps", "shutdown" };
-	int i, flag = 0;
+	int i, flag = -10;
 	char * pch = NULL;
 	for (i = 0; i < 10; ++i) {
 		pch = strstr(buffer, keywords[i]);
 		if (pch) {
-			flag = 1;
+			flag = i;
 			break;
 		}
 	}
@@ -121,21 +121,27 @@ int isKeyword(char buffer[]) {
 }
 
 int KEY(char buf[]) {
-	int x=0,i, j = 0;
+	int x=-1,i, j = 0;
+
 	char buffer[15] = { 0 };
 		for (i = 0; i < 128; ++i) {
 			char ch = buf[i];
 			if (ch == '\r' && buf[i + 1] == '\n') { 
-				if (isKeyword(buffer) == 1) {
+				x = isKeyword(buffer);
+				if ( x > -1) {
+					ret_flag(x);
 					kiv_os_rtl::Write_File(stdout, buffer, j, written);
 					kiv_os_rtl::Write_File(stdout, " Keyword\n", 9, written);
 					j = 0;
+					x = 0;
 					return 0;
 				}
 			}
 			if ((ch == ' ' || ch == '\n' || ch == '\r')) {
-				if (isKeyword(buffer) == 1) {
-					kiv_os_rtl::Write_File(stdout, buffer, j, written);
+				x = isKeyword(buffer);
+				if (x > -1) {
+					ret_flag(x);
+					kiv_os_rtl::Write_File(stdout, buffer, j, written);		
 					kiv_os_rtl::Write_File(stdout, " Keyword\n", 9, written);
 					j = 0;
 					for (size_t k = 0; k < sizeof(buffer); k++)
@@ -161,5 +167,34 @@ int KEY(char buf[]) {
 			
 	}
 	
+	return 0;
+}
+
+int ret_flag(int flag) {
+	switch (flag)
+	{
+	case 0 : kiv_os_rtl::Write_File(stdout, "volam echo\n", 11, written);
+		break;
+	case 1 : kiv_os_rtl::Write_File(stdout, "volam cd\n", 9, written);
+		break;
+	case 2: kiv_os_rtl::Write_File(stdout, "volam dir\n", 10, written);
+		break;
+	case 3: kiv_os_rtl::Write_File(stdout, "volam md\n", 9, written);
+		break;
+	case 4: kiv_os_rtl::Write_File(stdout, "volam rd\n", 9, written);
+		break;
+	case 5: kiv_os_rtl::Write_File(stdout, "volam type\n", 11, written);
+		break;
+	case 6: kiv_os_rtl::Write_File(stdout, "volam wc\n", 9, written);
+		break;
+	case 7: kiv_os_rtl::Write_File(stdout, "volam sort\n", 11, written);
+		break;
+	case 8: kiv_os_rtl::Write_File(stdout, "volam ps\n", 9, written);
+		break;
+	case 9: kiv_os_rtl::Write_File(stdout, "volam shutdown\n", 15, written);
+		break;
+	default: kiv_os_rtl::Write_File(stdout, "Nevim co volat\n", 16, written);
+		break;
+	}
 	return 0;
 }

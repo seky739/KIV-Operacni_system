@@ -6,6 +6,7 @@ extern "C" size_t __stdcall shell(const kiv_os::TRegisters &regs);
 
 int isKeyword(char buffer[]);
 int KEY(char buf[]);
+int ret_flag(int flag);
 
 //int accept_string(char *Buffer);
 
